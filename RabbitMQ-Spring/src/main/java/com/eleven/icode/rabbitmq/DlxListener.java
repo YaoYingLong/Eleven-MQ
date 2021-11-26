@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class DlxListener implements ChannelAwareMessageListener {
-
     @Override
     public void onMessage(Message message, Channel channel) throws Exception {
         long deliveryTag = message.getMessageProperties().getDeliveryTag();

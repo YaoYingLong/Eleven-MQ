@@ -12,13 +12,7 @@
     <!--加载配置文件-->
     <context:property-placeholder location="classpath:rabbitmq.properties"/>
     <!-- 定义rabbitmq connectionFactory -->
-    <rabbit:connection-factory id="connectionFactory" host="${rabbitmq.host}"
-                               port="${rabbitmq.port}"
-                               username="${rabbitmq.username}"
-                               password="${rabbitmq.password}"
-                               virtual-host="${rabbitmq.virtual-host}"
-                               publisher-confirms="true"
-                               publisher-returns="true"/>
+    <rabbit:connection-factory id="connectionFactory" host="${rabbitmq.host}" port="${rabbitmq.port}" username="${rabbitmq.username}" password="${rabbitmq.password}" virtual-host="${rabbitmq.virtual-host}" publisher-confirms="true" publisher-returns="true"/>
     <!--定义管理交换机、队列-->
     <rabbit:admin connection-factory="connectionFactory"/>
     <!--定义rabbitTemplate对象操作可以在代码中方便发送消息-->

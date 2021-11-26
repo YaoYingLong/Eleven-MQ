@@ -11,13 +11,8 @@
        http://www.springframework.org/schema/rabbit/spring-rabbit.xsd">
     <!--加载配置文件-->
     <context:property-placeholder location="classpath:rabbitmq.properties"/>
-
     <!-- 定义rabbitmq connectionFactory -->
-    <rabbit:connection-factory id="connectionFactory" host="${rabbitmq.host}"
-                               port="${rabbitmq.port}"
-                               username="${rabbitmq.username}"
-                               password="${rabbitmq.password}"
-                               virtual-host="${rabbitmq.virtual-host}"/>
+    <rabbit:connection-factory id="connectionFactory" host="${rabbitmq.host}" port="${rabbitmq.port}" username="${rabbitmq.username}" password="${rabbitmq.password}" virtual-host="${rabbitmq.virtual-host}"/>
 
     <bean id="springQueueListener" class="com.eleven.icode.rabbitmq.SpringQueueListener"/>
     <bean id="fanoutListener" class="com.eleven.icode.rabbitmq.SpringQueueListener"/>
