@@ -1,0 +1,7 @@
+spring:
+  rabbitmq:
+    host: localhost #主机ip
+    port: 5672 #端口
+    username: eleven
+    password: eleven
+    virtual-host: eleven
