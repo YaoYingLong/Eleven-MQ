@@ -42,44 +42,32 @@ import java.util.Set;
 
 
 public class AclClient {
-
     private static final Map<MessageQueue, Long> OFFSE_TABLE = new HashMap<MessageQueue, Long>();
-
     private static final String ACL_ACCESS_KEY = "RocketMQ";
-
     private static final String ACL_SECRET_KEY = "1234567";
-
     public static void main(String[] args) throws MQClientException, InterruptedException {
         producer();
         pushConsumer();
         pullConsumer();
     }
-
     public static void producer() throws MQClientException {
         DefaultMQProducer producer = new DefaultMQProducer("ProducerGroupName", getAclRPCHook());
         producer.setNamesrvAddr("127.0.0.1:9876");
         producer.start();
-
-        for (int i = 0; i < 128; i++)
+        for (int i = 0; i < 128; i++) {
             try {
-                {
-                    Message msg = new Message("TopicTest",
-                            "TagA",
-                            "OrderID188",
-                            "Hello world".getBytes(RemotingHelper.DEFAULT_CHARSET));
-                    SendResult sendResult = producer.send(msg);
-                    System.out.printf("%s%n", sendResult);
-                }
+                Message msg = new Message("TopicTest", "TagA", "OrderID188", "Hello world".getBytes(RemotingHelper.DEFAULT_CHARSET));
+                SendResult sendResult = producer.send(msg);
+                System.out.printf("%s%n", sendResult);
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
+        }
         producer.shutdown();
     }
 
     public static void pushConsumer() throws MQClientException {
-
         DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("please_rename_unique_group_name_5", getAclRPCHook(), new AllocateMessageQueueAveragely());
         consumer.setNamesrvAddr("127.0.0.1:9876");
         consumer.subscribe("TopicTest", "*");
@@ -87,7 +75,6 @@ public class AclClient {
         // Wrong time format 2017_0422_221800
         consumer.setConsumeTimestamp("20180422221800");
         consumer.registerMessageListener(new MessageListenerConcurrently() {
-
             @Override
             public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> msgs, ConsumeConcurrentlyContext context) {
                 System.out.printf("%s Receive New Messages: %s %n", Thread.currentThread().getName(), msgs);
@@ -103,15 +90,13 @@ public class AclClient {
         DefaultMQPullConsumer consumer = new DefaultMQPullConsumer("please_rename_unique_group_name_6", getAclRPCHook());
         consumer.setNamesrvAddr("127.0.0.1:9876");
         consumer.start();
-
         Set<MessageQueue> mqs = consumer.fetchSubscribeMessageQueues("TopicTest");
         for (MessageQueue mq : mqs) {
             System.out.printf("Consume from the queue: %s%n", mq);
             SINGLE_MQ:
             while (true) {
                 try {
-                    PullResult pullResult =
-                            consumer.pullBlockIfNotFound(mq, null, getMessageQueueOffset(mq), 32);
+                    PullResult pullResult = consumer.pullBlockIfNotFound(mq, null, getMessageQueueOffset(mq), 32);
                     System.out.printf("%s%n", pullResult);
                     putMessageQueueOffset(mq, pullResult.getNextBeginOffset());
                     printBody(pullResult);
@@ -132,7 +117,6 @@ public class AclClient {
                 }
             }
         }
-
         consumer.shutdown();
     }
 
