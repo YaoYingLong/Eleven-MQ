@@ -34,7 +34,7 @@ public class TransactionListenerImpl implements TransactionListener {
 //        int status = value % 3;
 //        localTrans.put(msg.getTransactionId(), status);
 //        return LocalTransactionState.UNKNOW;
-
+        System.out.println("executeLocalTransaction:" + msg);
         String tags = msg.getTags();
         if (StringUtils.contains(tags, "TagA")) {
             return LocalTransactionState.COMMIT_MESSAGE;
@@ -61,7 +61,11 @@ public class TransactionListenerImpl implements TransactionListener {
 //            }
 //        }
 //        return LocalTransactionState.COMMIT_MESSAGE;
+        System.out.println("checkLocalTransaction:" + msg);
         String tags = msg.getTags();
+        if (StringUtils.contains(tags, "TagA")) {
+            return LocalTransactionState.COMMIT_MESSAGE;
+        }
         if (StringUtils.contains(tags, "TagC")) {
             return LocalTransactionState.COMMIT_MESSAGE;
         } else if (StringUtils.contains(tags, "TagD")) {

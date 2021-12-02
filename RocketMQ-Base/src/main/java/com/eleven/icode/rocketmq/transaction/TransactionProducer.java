@@ -44,9 +44,9 @@ public class TransactionProducer {
         producer.setTransactionListener(transactionListener);
         producer.start();
         String[] tags = new String[]{"TagA", "TagB", "TagC", "TagD", "TagE"};
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 1; i++) {
             try {
-                Message msg = new Message("TopicTest", tags[i % tags.length], "KEY" + i, ("Hello RocketMQ " + i).getBytes(RemotingHelper.DEFAULT_CHARSET));
+                Message msg = new Message("TopicTest", "TagA", "KEY" + i, ("Hello RocketMQ " + i).getBytes(RemotingHelper.DEFAULT_CHARSET));
                 msg.putUserProperty(MessageConst.PROPERTY_TRANSACTION_CHECK_TIMES, "15"); // 回查次数
                 msg.putUserProperty(MessageConst.PROPERTY_CHECK_IMMUNITY_TIME_IN_SECONDS, "10000"); // 回查时间
                 SendResult sendResult = producer.sendMessageInTransaction(msg, null);

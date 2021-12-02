@@ -40,6 +40,7 @@ public class AsyncProducer {
         final CountDownLatch countDownLatch = new CountDownLatch(messageCount);
         for (int i = 0; i < messageCount; i++) {
             try {
+                Thread.sleep(2000);
                 final int index = i;
                 Message msg = new Message("TopicTest", "TagA", "OrderID188", "Hello world".getBytes(RemotingHelper.DEFAULT_CHARSET));
                 producer.send(msg, new SendCallback() {
@@ -54,13 +55,13 @@ public class AsyncProducer {
                         System.out.printf("%-10d Exception %s %n", index, e);
                         e.printStackTrace();
                     }
-                });
+                }, 1000 * 60 * 10);
                 System.out.println("消息发送完成");
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        countDownLatch.await(5, TimeUnit.SECONDS);
+        countDownLatch.await(1, TimeUnit.SECONDS);
         producer.shutdown();
     }
 }
