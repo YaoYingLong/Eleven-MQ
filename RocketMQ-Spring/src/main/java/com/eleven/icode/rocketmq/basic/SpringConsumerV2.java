@@ -10,11 +10,11 @@ import org.springframework.stereotype.Component;
  * 注意下@RocketMQMessageListener这个注解的其他属性
  */
 @Component
-@RocketMQMessageListener(consumerGroup = "MyConsumerGroup", messageModel = MessageModel.CLUSTERING,
-        topic = "TestTopic", consumeMode = ConsumeMode.CONCURRENTLY, selectorExpression = "TagA")
-public class SpringConsumer implements RocketMQListener<String> {
+@RocketMQMessageListener(consumerGroup = "MyConsumerGroupV2", messageModel = MessageModel.CLUSTERING,
+        topic = "TestTopic", consumeMode = ConsumeMode.CONCURRENTLY, selectorExpression = "TagB")
+public class SpringConsumerV2 implements RocketMQListener<String> {
     @Override
     public void onMessage(String message) {
-        System.out.println("Received message1 : " + message);
+        System.out.println("Received message2 : " + message);
     }
 }
