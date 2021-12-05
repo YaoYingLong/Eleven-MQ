@@ -28,6 +28,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class TransactionListenerImpl implements TransactionListener {
     private AtomicInteger transactionIndex = new AtomicInteger(0);
     private ConcurrentHashMap<String, Integer> localTrans = new ConcurrentHashMap<>();
+    private static int tagb = 0;
+    private static int tagc = 0;
     @Override
     public LocalTransactionState executeLocalTransaction(Message msg, Object arg) {
 //        int value = transactionIndex.getAndIncrement();
@@ -39,8 +41,16 @@ public class TransactionListenerImpl implements TransactionListener {
         if (StringUtils.contains(tags, "TagA")) {
             return LocalTransactionState.COMMIT_MESSAGE;
         } else if (StringUtils.contains(tags, "TagB")) {
+            tagb++;
+            if (tagb > 10) {
+                return LocalTransactionState.COMMIT_MESSAGE;
+            }
             return LocalTransactionState.ROLLBACK_MESSAGE;
         } else {
+            tagc++;
+            if (tagc > 10) {
+                return LocalTransactionState.COMMIT_MESSAGE;
+            }
             return LocalTransactionState.UNKNOW;
         }
     }
@@ -63,9 +73,9 @@ public class TransactionListenerImpl implements TransactionListener {
 //        return LocalTransactionState.COMMIT_MESSAGE;
         System.out.println("checkLocalTransaction:" + msg);
         String tags = msg.getTags();
-        if (StringUtils.contains(tags, "TagA")) {
-            return LocalTransactionState.COMMIT_MESSAGE;
-        }
+//        if (StringUtils.contains(tags, "TagA")) {
+//            return LocalTransactionState.COMMIT_MESSAGE;
+//        }
         if (StringUtils.contains(tags, "TagC")) {
             return LocalTransactionState.COMMIT_MESSAGE;
         } else if (StringUtils.contains(tags, "TagD")) {

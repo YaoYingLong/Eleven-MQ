@@ -18,9 +18,10 @@ package com.eleven.icode.rocketmq.simple;
 
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
-import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.remoting.common.RemotingHelper;
+
+import java.util.Date;
 
 // 简单样例：同步发送消息
 public class Producer {
@@ -28,18 +29,20 @@ public class Producer {
         DefaultMQProducer producer = new DefaultMQProducer("ProducerGroupName");
         producer.setNamesrvAddr("localhost:9876");
         producer.start();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 100; i++) {
             try {
                 Message msg = new Message("TopicTest", "TagA", "OrderID188", "Hello world".getBytes(RemotingHelper.DEFAULT_CHARSET));
                 //同步传递消息，消息会发给集群中的一个Broker节点。
 //                msg.setDelayTimeLevel(3);
 //                SendResult sendResult = producer.send(msg);
 //                System.out.printf("%s%n", sendResult);
+                System.out.println("Date:" + new Date());
                 System.out.println("msg：" + msg);
                 producer.sendOneway(msg);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            Thread.sleep(20000);
         }
         producer.shutdown();
     }

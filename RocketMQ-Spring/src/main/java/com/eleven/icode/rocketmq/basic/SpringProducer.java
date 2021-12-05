@@ -14,9 +14,15 @@ public class SpringProducer {
 
     @Resource
     private RocketMQTemplate rocketMQTemplate;
+    @Resource
+    private RocketMQTemplate extRocketMQTemplate;
 
     public void sendMessage(String topic, String msg) {
-        this.rocketMQTemplate.convertAndSend(topic, msg);
+        String[] tags = new String[]{"TagA", "TagB", "TagC", "TagD", "TagE"};
+        for (String tag : tags) {
+            String destination = topic + ":" + tag;
+            this.rocketMQTemplate.convertAndSend(destination, msg);
+        }
     }
 
     public void sendMessageInTransaction(String topic, String msg) throws InterruptedException {
@@ -32,7 +38,7 @@ public class SpringProducer {
                     .build();
             String destination = topic + ":" + tags[i % tags.length];
             //这里发送事务消息时，还是会转换成RocketMQ的Message对象，再调用RocketMQ的API完成事务消息机制。
-            SendResult sendResult = rocketMQTemplate.sendMessageInTransaction(destination, message, destination);
+            SendResult sendResult = extRocketMQTemplate.sendMessageInTransaction(destination, message, destination);
             System.out.printf("%s%n", sendResult);
             Thread.sleep(10);
         }
