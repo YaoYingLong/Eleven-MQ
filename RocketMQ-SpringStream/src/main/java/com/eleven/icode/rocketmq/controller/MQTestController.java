@@ -1,6 +1,6 @@
 package com.eleven.icode.rocketmq.controller;
 
-import com.roy.scrocket.basic.ScProducer;
+import com.eleven.icode.rocketmq.basic.ScProducer;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
